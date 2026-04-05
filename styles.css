@@ -1,0 +1,245 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #7ec8d8, #4fb3c8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Contenedor general */
+.container {
+  width: 100%;
+  max-width: 420px;
+  padding: 20px;
+}
+
+/* Títulos */
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+/* Botones verticales */
+.btn {
+  display: block;
+  text-align: center;
+  padding: 18px;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #000;
+  text-decoration: none;
+  background: linear-gradient(to bottom, #ffffff, #dfe9ec);
+  border-radius: 40px;
+  box-shadow: 0 6px 0 #b0c4c9, 0 8px 12px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #b0c4c9;
+}
+
+/* GRID de sorteos */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+/* Botones del grid */
+.grid .btn {
+  padding: 20px 10px;
+  font-size: 1.1rem;
+  border-radius: 20px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+/* Ocultar elementos */
+.hidden {
+  display: none;
+}
+
+/* Botón siguiente */
+.siguiente {
+  margin-top: 20px;
+  background: linear-gradient(to bottom, #ffd27a, #f5b041);
+}
+
+/* Display del número */
+#display {
+  width: 100%;
+  padding: 15px;
+  font-size: 2rem;
+  text-align: center;
+  margin: 20px 0;
+  border-radius: 15px;
+  border: none;
+  background: #fff;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Teclado numérico */
+.teclado {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.teclado button {
+  padding: 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 15px;
+  background: linear-gradient(to bottom, #ffffff, #dfe9ec);
+  box-shadow: 0 4px 0 #b0c4c9;
+  cursor: pointer;
+}
+
+.teclado button:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #b0c4c9;
+}
+/* Inputs */
+select, #importe {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: none;
+}
+
+/* Tabla */
+.tabla {
+  width: 100%;
+  margin-top: 20px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 0.9rem;
+}
+
+.tabla th {
+  background: #4fb3c8;
+  color: #fff;
+  padding: 8px;
+}
+
+.tabla td {
+  padding: 8px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Contenedor horizontal */
+.acciones {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+/* Botones mitad de ancho */
+.accion {
+  flex: 1;
+  font-size: 1rem;
+}
+
+/* Izquierda (quitar) */
+.quitar {
+  background: linear-gradient(to bottom, #ffb3b3, #e74c3c);
+}
+
+/* Derecha (prox) */
+.prox {
+  background: linear-gradient(to bottom, #ffeaa7, #f1c40f);
+}
+
+/* Botón enviar grande abajo */
+.enviar-full {
+  width: 100%;
+  margin-top: 15px;
+  padding: 18px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  border-radius: 20px;
+  border: none;
+  background: linear-gradient(to bottom, #a8ffb0, #2ecc71);
+  box-shadow: 0 6px 0 #27ae60;
+  cursor: pointer;
+}
+
+.enviar-full:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #27ae60;
+}
+/* Fila horizontal de apuesta */
+.fila-apuesta {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+/* Número */
+#display {
+  flex: 2;
+  padding: 12px;
+  font-size: 1.5rem;
+  text-align: center;
+  border-radius: 10px;
+  border: none;
+  background: #fff;
+}
+
+/* Ubicación */
+#ubicacion {
+  flex: 1;
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+}
+
+/* Importe */
+#importe {
+  flex: 1;
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+}
+
+/* Total */
+.total-container {
+  margin-top: 15px;
+  padding: 12px;
+  background: #ffffff;
+  border-radius: 10px;
+  text-align: right;
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .fila-apuesta {
+    flex-direction: column;
+  }
+}
