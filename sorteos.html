@@ -14,17 +14,20 @@
     <div id="pantalla-loterias">
       <h1 class="title">Lotería</h1>
 
-      <div class="grid">
-        <button class="btn">Provincia</button>
-        <button class="btn">La Ciudad</button>
-        <button class="btn">Cordoba</button>
-        <button class="btn">Santa Fe</button>
-        <button class="btn">Entre Rios</button>
-        <button class="btn">Montevideo</button>
-        <button class="btn">Volver</button>
-      </div>
+      <div class="grid" id="loterias">
 
-      <button class="btn siguiente">Siguiente</button>
+  <button class="btn loteria">Provincia</button>
+  <button class="btn loteria">La Ciudad</button>
+  <button class="btn loteria">Lotería 3</button>
+  <button class="btn loteria">Lotería 4</button>
+  <button class="btn loteria">Lotería 5</button>
+  <button class="btn loteria">Montevideo</button>
+  <button> <a href="index.html" class="btn loteria">Volver</a></button>
+
+  <button class="btn todos">Todos</button>
+
+</div>
+      <button class="btn siguiente" disabled>Siguiente</button>
     </div>
 
     <!-- PANTALLA TECLADO -->
@@ -76,6 +79,11 @@
 <button class="btn enviar-full">Enviar Apuesta</button>
 
   <!-- TABLA DE APUESTAS -->
+ <div class="ticket-info">
+  <strong>Loterías:</strong>
+  <span id="loterias-ticket">-</span>
+</div>
+  
   <table class="tabla">
     <thead>
       <tr>
@@ -87,7 +95,7 @@
     <tbody id="tabla-body"></tbody>
   </table>
 <div class="total-container">
-  Total: $<span id="total">0</span>
+  <span id="resumen">0 apuestas</span> - Total: $<span id="total">0</span>
 </div>
 </div>
     <script src="app.js"></script>

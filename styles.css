@@ -243,3 +243,51 @@ select, #importe {
     flex-direction: column;
   }
 }
+/* Animación flash verde */
+@keyframes flashTotal {
+  0% {
+    background-color: #a8ffb0;
+  }
+  100% {
+    background-color: #ffffff;
+  }
+}
+
+/* Clase que dispara la animación */
+.flash {
+  animation: flashTotal 0.4s ease;
+}
+/* Lotería seleccionada */
+.loteria.activa {
+  background: linear-gradient(to bottom, #a8ffb0, #2ecc71);
+  color: #000;
+  box-shadow: 0 4px 0 #27ae60;
+}
+
+/* Botón todos */
+.todos {
+  background: linear-gradient(to bottom, #d6eaff, #74b9ff);
+}
+.siguiente:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.ticket-info {
+  margin-top: 15px;
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 10px;
+  font-size: 0.95rem;
+}
+
+/* Opcional: estilo tipo "chips" */
+.loteria-chip {
+  display: inline-block;
+  background: #2ecc71;
+  color: #000;
+  padding: 4px 8px;
+  border-radius: 8px;
+  margin: 2px;
+  font-size: 0.8rem;
+}

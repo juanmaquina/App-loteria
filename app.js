@@ -7,12 +7,7 @@ const btnSiguiente = document.querySelector(".siguiente");
 const pantallaLoterias = document.getElementById("pantalla-loterias");
 const pantallaTeclado = document.getElementById("pantalla-teclado");
 
-if (btnSiguiente) {
-  btnSiguiente.addEventListener("click", () => {
-    pantallaLoterias.classList.add("hidden");
-    pantallaTeclado.classList.remove("hidden");
-  });
-}
+
 
  // Esperar a que cargue el DOM
 document.addEventListener("DOMContentLoaded", () => {
@@ -23,8 +18,74 @@ document.addEventListener("DOMContentLoaded", () => {
   const ubicacion = document.getElementById("ubicacion");
   const importe = document.getElementById("importe");
   const tbody = document.getElementById("tabla-body");
-  const totalSpan = document.getElementById("total");
 
+const totalSpan = document.getElementById("total");
+const resumenSpan = document.getElementById("resumen");
+
+
+
+const botonesLoteria = document.querySelectorAll(".loteria");
+const btnTodos = document.querySelector(".todos");
+
+
+
+
+
+// Array de seleccionadas
+let loteriasSeleccionadas = [];
+
+// Toggle individual
+
+function actualizarEstadoSiguiente() {
+  const seleccionadas = document.querySelectorAll(".loteria.activa");
+  btnSiguiente.disabled = seleccionadas.length === 0;
+}
+
+botonesLoteria.forEach(btn => {
+  btn.addEventListener("click", () => {
+    btn.classList.toggle("activa");
+  });
+});
+
+
+function obtenerLoteriasSeleccionadas() {
+  return Array.from(document.querySelectorAll(".loteria.activa"))
+    .map(btn => btn.textContent.trim());
+}
+
+const seleccionadas = obtenerLoteriasSeleccionadas();
+localStorage.setItem("loterias", JSON.stringify(seleccionadas));
+
+
+// Botón TODOS
+
+btnTodos.addEventListener("click", () => {
+
+  const todasActivas = document.querySelectorAll(".loteria.activa").length === botonesLoteria.length;
+
+  botonesLoteria.forEach(btn => {
+    btn.classList.toggle("activa", !todasActivas);
+  });
+actualizarEstadoSiguiente();
+
+});
+ 
+
+
+if (btnSiguiente) {
+  btnSiguiente.addEventListener("click", () => {
+ 
+
+  // Guardar selección (opcional: localStorage para persistencia)
+  //localStorage.setItem("loterias", JSON.stringify(loteriasSeleccionadas));
+
+  // Cambiar pantalla
+  pantallaLoterias.classList.add("hidden");
+  pantallaTeclado.classList.remove("hidden");
+  
+
+});
+}
 
 
   // ========================
@@ -34,8 +95,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function proxApuesta() {
     const numero = display.value;
 
-    if (numero.length !== 4) {
-      alert("El número debe tener 4 cifras");
+    if (numero.length === 0) {
+      alert("Ingrese una apuesta");
       return;
     }
 
@@ -97,6 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
     display.value = "";
     importe.value = "";
   }
+  
 
   // ========================
   // TECLADO NUMÉRICO
@@ -136,11 +198,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-
   // Acciones
 document.querySelector(".prox").addEventListener("click", proxApuesta);
 document.querySelector(".quitar").addEventListener("click", quitarApuesta);
 document.querySelector(".enviar-full").addEventListener("click", enviarApuesta);
+
 
 function calcularTotal() {
   let total = 0;
@@ -149,9 +211,22 @@ function calcularTotal() {
     total += Number(apuesta.importe);
   });
 
-  totalSpan.textContent = total;
+  totalSpan.textContent = formatearMoneda(total);
+
+  const cantidad = apuestas.length;
+  resumenSpan.textContent = `${cantidad} apuesta${cantidad !== 1 ? "s" : ""}`;
+
+  // 🔥 Flash visual
+  const container = document.querySelector(".total-container");
+  container.classList.remove("flash");
+
+  // Forzar reflow para reiniciar animación
+  void container.offsetWidth;
+
+  container.classList.add("flash");
 }
-
 });
-
+function formatearMoneda(valor) {
+  return valor.toLocaleString("es-AR");
+}
 
