@@ -57,8 +57,6 @@ actualizarEstadoSiguiente();
 
 
 // Botón TODOS
-
-
   function obtenerLoteriasSeleccionadas() {
   return Array.from(document.querySelectorAll(".loteria.activa"))
     .map(btn => btn.textContent.trim());
@@ -70,13 +68,13 @@ btnTodos.addEventListener("click", () => {
 
   botonesLoteria.forEach(btn => {
     btn.classList.toggle("activa", !todasActivas);
+actualizarEstadoSiguiente();
+
   });
 
 });
  
-const seleccionadas = obtenerLoteriasSeleccionadas();
 
-localStorage.setItem("loterias", JSON.stringify(seleccionadas));
 
 if (btnSiguiente) {
   btnSiguiente.addEventListener("click", () => {
@@ -92,7 +90,8 @@ actualizarEstadoSiguiente();
   //localStorage.setItem("loterias", JSON.stringify(loteriasSeleccionadas));
 
 
-
+const seleccionadas = obtenerLoteriasSeleccionadas();
+localStorage.setItem("loterias", JSON.stringify(seleccionadas));
 
   // Cambiar pantalla
 
