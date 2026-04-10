@@ -32,9 +32,11 @@ const btnTodos = document.querySelector(".todos");
 
 
 // Array de seleccionadas
-let loteriasSeleccionadas = [];
 
 // Toggle individual
+
+
+
 
 function actualizarEstadoSiguiente() {
   const seleccionadas = document.querySelectorAll(".loteria.activa");
@@ -44,20 +46,23 @@ function actualizarEstadoSiguiente() {
 botonesLoteria.forEach(btn => {
   btn.addEventListener("click", () => {
     btn.classList.toggle("activa");
-  });
+actualizarEstadoSiguiente();
+});
 });
 
 
-function obtenerLoteriasSeleccionadas() {
-  return Array.from(document.querySelectorAll(".loteria.activa"))
-    .map(btn => btn.textContent.trim());
-}
 
-const seleccionadas = obtenerLoteriasSeleccionadas();
-localStorage.setItem("loterias", JSON.stringify(seleccionadas));
+
+
 
 
 // Botón TODOS
+
+
+  function obtenerLoteriasSeleccionadas() {
+  return Array.from(document.querySelectorAll(".loteria.activa"))
+    .map(btn => btn.textContent.trim());
+}
 
 btnTodos.addEventListener("click", () => {
 
@@ -66,26 +71,31 @@ btnTodos.addEventListener("click", () => {
   botonesLoteria.forEach(btn => {
     btn.classList.toggle("activa", !todasActivas);
   });
-actualizarEstadoSiguiente();
 
 });
  
+const seleccionadas = obtenerLoteriasSeleccionadas();
 
+localStorage.setItem("loterias", JSON.stringify(seleccionadas));
 
 if (btnSiguiente) {
   btnSiguiente.addEventListener("click", () => {
- 
+   pantallaLoterias.classList.add("hidden");
+   pantallaTeclado.classList.remove("hidden");
+  });
+}
+actualizarEstadoSiguiente();
+
+
 
   // Guardar selección (opcional: localStorage para persistencia)
   //localStorage.setItem("loterias", JSON.stringify(loteriasSeleccionadas));
 
-  // Cambiar pantalla
-  pantallaLoterias.classList.add("hidden");
-  pantallaTeclado.classList.remove("hidden");
-  
 
-});
-}
+
+
+  // Cambiar pantalla
+
 
 
   // ========================
