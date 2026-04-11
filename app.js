@@ -7,27 +7,67 @@ const btnSiguiente = document.querySelector(".siguiente");
 const pantallaLoterias = document.getElementById("pantalla-loterias");
 const pantallaTeclado = document.getElementById("pantalla-teclado");
 
+//Obtener turno
+function obtenerTurno() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("turno") || "-";
+}
+//Obtener hora y fecha
+function obtenerFechaHora() {
+  const ahora = new Date();
+  return ahora.toLocaleString("es-AR");
+}
 
+btnSiguiente.addEventListener("click", () => {
+
+  const seleccionadas = Array.from(document.querySelectorAll(".loteria.activa"))
+    .map(btn => btn.textContent.trim());
+
+
+  localStorage.setItem("loterias", JSON.stringify(seleccionadas));
+
+  pantallaLoterias.classList.add("hidden");
+  pantallaTeclado.classList.remove("hidden");
+
+});
+
+  const loterias = JSON.parse(localStorage.getItem("loterias")) || [];
 
  // Esperar a que cargue el DOM
 document.addEventListener("DOMContentLoaded", () => {
 
   let apuestas = [];
 
-  const display = document.getElementById("display");
-  const ubicacion = document.getElementById("ubicacion");
-  const importe = document.getElementById("importe");
-  const tbody = document.getElementById("tabla-body");
-
+const display = document.getElementById("display");
+const ubicacion = document.getElementById("ubicacion");
+const importe = document.getElementById("importe");
+const tbody = document.getElementById("tabla-body");
 const totalSpan = document.getElementById("total");
 const resumenSpan = document.getElementById("resumen");
-
-
-
 const botonesLoteria = document.querySelectorAll(".loteria");
 const btnTodos = document.querySelector(".todos");
 
+const turnoSpan = document.getElementById("turno-ticket");
+const loteriasSpan = document.getElementById("loterias-ticket");
+const fechaSpan = document.getElementById("fecha-ticket");
 
+
+
+// Turno
+const turno = obtenerTurno();
+turnoSpan.textContent = turno.replace("_", " ");
+
+
+if (loterias.length === 0) {
+  loteriasSpan.textContent = "-";
+} else {
+  loteriasSpan.innerHTML = loterias
+    .map(l => `<span class="loteria-chip">${l}</span>`)
+    .join("");
+}
+
+// Fecha
+fechaSpan.textContent = obtenerFechaHora();
 
 
 
@@ -81,17 +121,19 @@ if (btnSiguiente) {
    pantallaLoterias.classList.add("hidden");
    pantallaTeclado.classList.remove("hidden");
   });
+
+
 }
 actualizarEstadoSiguiente();
 
+// Loterías (desde localStorage)
 
 
   // Guardar selección (opcional: localStorage para persistencia)
-  //localStorage.setItem("loterias", JSON.stringify(loteriasSeleccionadas));
-
+  localStorage.setItem("loterias", JSON.stringify(loterias));
 
 const seleccionadas = obtenerLoteriasSeleccionadas();
-localStorage.setItem("loterias", JSON.stringify(seleccionadas));
+console.log("Guardando loterías:", seleccionadas); // 👈 debug
 
   // Cambiar pantalla
 

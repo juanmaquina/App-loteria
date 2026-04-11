@@ -291,3 +291,21 @@ select, #importe {
   margin: 2px;
   font-size: 0.8rem;
 }
+.ticket-header {
+  margin-top: 15px;
+  padding: 12px;
+  background: #ffffff;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Chips de loterías */
+.loteria-chip {
+  display: inline-block;
+  background: #2ecc71;
+  padding: 3px 8px;
+  margin: 2px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+}
