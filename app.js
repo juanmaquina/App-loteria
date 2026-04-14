@@ -1,42 +1,28 @@
 
-// ========================
-// NAVEGACIÓN A TECLADO
-// ========================
-
-const btnSiguiente = document.querySelector(".siguiente");
-const pantallaLoterias = document.getElementById("pantalla-loterias");
-const pantallaTeclado = document.getElementById("pantalla-teclado");
-
-//Obtener turno
-function obtenerTurno() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("turno") || "-";
-}
-//Obtener hora y fecha
-function obtenerFechaHora() {
-  const ahora = new Date();
-  return ahora.toLocaleString("es-AR");
-}
-
-btnSiguiente.addEventListener("click", () => {
-
-  const seleccionadas = Array.from(document.querySelectorAll(".loteria.activa"))
-    .map(btn => btn.textContent.trim());
-
-
-  localStorage.setItem("loterias", JSON.stringify(seleccionadas));
-
-  pantallaLoterias.classList.add("hidden");
-  pantallaTeclado.classList.remove("hidden");
-
-});
-
-  const loterias = JSON.parse(localStorage.getItem("loterias")) || [];
-
  // Esperar a que cargue el DOM
 document.addEventListener("DOMContentLoaded", () => {
 
-  let apuestas = [];
+  // ========================
+  // ESTADO GLOBAL
+  // ========================
+  const ticket = {
+    turno: null,
+    loterias: [],
+    apuestas: []
+  };
+
+
+apuestas = [];
+
+
+const botonesLoteria = document.querySelectorAll(".loteria");
+const btnTodos = document.querySelector(".todos");
+const btnSiguiente = document.querySelector(".siguiente");
+const pantallaLoterias = document.getElementById("pantalla-loterias");
+const pantallaTeclado = document.getElementById("pantalla-teclado");
+const loteriasSpan = document.getElementById("loterias-ticket");
+const turnoSpan = document.getElementById("turno-ticket");
+const fechaSpan = document.getElementById("fecha-ticket");
 
 const display = document.getElementById("display");
 const ubicacion = document.getElementById("ubicacion");
@@ -44,104 +30,76 @@ const importe = document.getElementById("importe");
 const tbody = document.getElementById("tabla-body");
 const totalSpan = document.getElementById("total");
 const resumenSpan = document.getElementById("resumen");
-const botonesLoteria = document.querySelectorAll(".loteria");
-const btnTodos = document.querySelector(".todos");
 
-const turnoSpan = document.getElementById("turno-ticket");
-const loteriasSpan = document.getElementById("loterias-ticket");
-const fechaSpan = document.getElementById("fecha-ticket");
+// ========================
+  // UTILIDADES
+  // ========================
+  function obtenerTurno() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("turno") || "-";
+  }
 
+  function obtenerFechaHora() {
+    return new Date().toLocaleString("es-AR");
+  }
 
-
-// Turno
-const turno = obtenerTurno();
-turnoSpan.textContent = turno.replace("_", " ");
-
-
-if (loterias.length === 0) {
-  loteriasSpan.textContent = "-";
-} else {
-  loteriasSpan.innerHTML = loterias
-    .map(l => `<span class="loteria-chip">${l}</span>`)
-    .join("");
-}
-
-// Fecha
-fechaSpan.textContent = obtenerFechaHora();
-
-
-
-// Array de seleccionadas
-
-// Toggle individual
-
-
-
-
-function actualizarEstadoSiguiente() {
-  const seleccionadas = document.querySelectorAll(".loteria.activa");
-  btnSiguiente.disabled = seleccionadas.length === 0;
-}
-
-botonesLoteria.forEach(btn => {
-  btn.addEventListener("click", () => {
-    btn.classList.toggle("activa");
-actualizarEstadoSiguiente();
-});
-});
-
-
-
-
-
-
-
-// Botón TODOS
   function obtenerLoteriasSeleccionadas() {
-  return Array.from(document.querySelectorAll(".loteria.activa"))
-    .map(btn => btn.textContent.trim());
-}
+    return Array.from(document.querySelectorAll(".loteria.activa"))
+      .map(btn => btn.textContent.trim());
+  }
 
-btnTodos.addEventListener("click", () => {
+  function actualizarEstadoSiguiente() {
+    const seleccionadas = document.querySelectorAll(".loteria.activa");
+    btnSiguiente.disabled = seleccionadas.length === 0;
+  }
 
-  const todasActivas = document.querySelectorAll(".loteria.activa").length === botonesLoteria.length;
-
+  // ========================
+  // SELECCIÓN LOTERÍAS
+  // ========================
   botonesLoteria.forEach(btn => {
-    btn.classList.toggle("activa", !todasActivas);
-actualizarEstadoSiguiente();
-
+    btn.addEventListener("click", () => {
+      btn.classList.toggle("activa");
+      actualizarEstadoSiguiente();
+    });
   });
 
-});
- 
+  btnTodos.addEventListener("click", () => {
+    const todasActivas = document.querySelectorAll(".loteria.activa").length === botonesLoteria.length;
 
+    botonesLoteria.forEach(btn => {
+      btn.classList.toggle("activa", !todasActivas);
+    });
 
-if (btnSiguiente) {
+    actualizarEstadoSiguiente();
+  });
+
+  // ========================
+  // PASAR A TECLADO
+  // ========================
   btnSiguiente.addEventListener("click", () => {
-   pantallaLoterias.classList.add("hidden");
-   pantallaTeclado.classList.remove("hidden");
+
+    ticket.turno = obtenerTurno();
+    ticket.loterias = obtenerLoteriasSeleccionadas();
+
+    // Mostrar datos del ticket
+    renderTicketInfo();
+
+    pantallaLoterias.classList.add("hidden");
+    pantallaTeclado.classList.remove("hidden");
+
   });
 
-
-}
-actualizarEstadoSiguiente();
-
-// Loterías (desde localStorage)
-
-
-  // Guardar selección (opcional: localStorage para persistencia)
-  localStorage.setItem("loterias", JSON.stringify(loterias));
-
-const seleccionadas = obtenerLoteriasSeleccionadas();
-console.log("Guardando loterías:", seleccionadas); // 👈 debug
-
-  // Cambiar pantalla
-
-
-
   // ========================
-  // FUNCIONES PRINCIPALES
+  // RENDER TICKET
   // ========================
+  function renderTicketInfo() {
+    turnoSpan.textContent = ticket.turno.replace("_", " ");
+    fechaSpan.textContent = obtenerFechaHora();
+
+    loteriasSpan.innerHTML = ticket.loterias
+      .map(l => `<span class="loteria-chip">${l}</span>`)
+      .join("");
+  }
 
   function proxApuesta() {
     const numero = display.value;
@@ -161,28 +119,28 @@ console.log("Guardando loterías:", seleccionadas); // 👈 debug
       ubicacion: ubicacion.value,
       importe: importe.value
     });
+    ticket.apuestas.push({
+    numero,
+    ubicacion,
+    importe:importe.value
+    });
 
     actualizarTabla();
     limpiarInputs();
   }
-
   function quitarApuesta() {
     apuestas.pop();
     actualizarTabla();
   }
 
   function enviarApuesta() {
-    if (apuestas.length === 0) {
+    if (ticket.apuestas.length === 0) {
       alert("No hay apuestas");
       return;
     }
-
-
-
     console.log("Apuestas enviadas:", apuestas);
     alert("Apuestas enviadas correctamente");
-
-    apuestas = [];
+    ticket.apuestas = [];
     actualizarTabla();
     limpiarInputs();
   }
@@ -254,30 +212,23 @@ document.querySelector(".prox").addEventListener("click", proxApuesta);
 document.querySelector(".quitar").addEventListener("click", quitarApuesta);
 document.querySelector(".enviar-full").addEventListener("click", enviarApuesta);
 
-
 function calcularTotal() {
   let total = 0;
 
-  apuestas.forEach(apuesta => {
-    total += Number(apuesta.importe);
+  const cantidadLoterias = ticket.loterias.length || 1;
+
+  ticket.apuestas.forEach(apuesta => {
+    total += Number(apuesta.importe) * cantidadLoterias;
   });
 
   totalSpan.textContent = formatearMoneda(total);
 
-  const cantidad = apuestas.length;
+  const cantidad = ticket.apuestas.length;
   resumenSpan.textContent = `${cantidad} apuesta${cantidad !== 1 ? "s" : ""}`;
 
-  // 🔥 Flash visual
-  const container = document.querySelector(".total-container");
-  container.classList.remove("flash");
-
-  // Forzar reflow para reiniciar animación
-  void container.offsetWidth;
-
-  container.classList.add("flash");
 }
-});
+
 function formatearMoneda(valor) {
   return valor.toLocaleString("es-AR");
 }
-
+});
