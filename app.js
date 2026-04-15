@@ -128,7 +128,7 @@ const resumenSpan = document.getElementById("resumen");
     limpiarInputs();
   }
   function quitarApuesta() {
-    apuestas.pop();
+    ticket.apuestas.pop();
     actualizarTabla();
   }
 
@@ -142,15 +142,15 @@ const resumenSpan = document.getElementById("resumen");
     alert("Apuestas enviadas correctamente");
 
     ticket.apuestas = [];
-     actualizarTabla();
     calcularTotal();
-    //limpiarInputs();
+    actualizarTabla();
+
+    limpiarInputs();
   }
 
   function actualizarTabla() {
        tbody.innerHTML = "";
-//REVISAR !!!
-  ticket.apuestas.forEach(apuesta => {
+    ticket.apuestas.forEach(apuesta => {
     const fila = document.createElement("tr");
 
     fila.innerHTML = `
