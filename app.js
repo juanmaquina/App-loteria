@@ -113,8 +113,7 @@ const resumenSpan = document.getElementById("resumen");
       alert("Ingresá un importe");
       return;
     }
-
-    apuestas.push({
+      apuestas.push({
       numero: numero,
       ubicacion: ubicacion.value,
       importe: importe.value
@@ -137,36 +136,33 @@ const resumenSpan = document.getElementById("resumen");
     if (ticket.apuestas.length === 0) {
       alert("No hay apuestas");
       return;
+
     }
     console.log("Apuestas enviadas:", apuestas);
     alert("Apuestas enviadas correctamente");
+
     ticket.apuestas = [];
-    actualizarTabla();
-    limpiarInputs();
+     actualizarTabla();
+    calcularTotal();
+    //limpiarInputs();
   }
 
   function actualizarTabla() {
-  tbody.innerHTML = "";
-
-  apuestas.forEach(apuesta => {
+       tbody.innerHTML = "";
+//REVISAR !!!
+  ticket.apuestas.forEach(apuesta => {
     const fila = document.createElement("tr");
 
     fila.innerHTML = `
       <td>${apuesta.numero}</td>
-      <td>${apuesta.ubicacion}</td>
-      <td>$${apuesta.importe}</td>
+      <td>${apuesta.ubicacion.value}</td>
+      <td>$${formatearMoneda(apuesta.importe)}</td>
     `;
 
     tbody.appendChild(fila);
   });
-
   calcularTotal(); // 👈 clave
 }
-
-  function limpiarInputs() {
-    display.value = "";
-    importe.value = "";
-  }
   
 
   // ========================
@@ -187,6 +183,11 @@ const resumenSpan = document.getElementById("resumen");
     display.value = "";
   }
 
+  function limpiarInputs() {
+  display.value = "";
+  importe.value = "";
+  }
+  
   // ========================
   // EVENTOS BOTONES
   // ========================
@@ -224,10 +225,8 @@ function calcularTotal() {
   totalSpan.textContent = formatearMoneda(total);
 
   const cantidad = ticket.apuestas.length;
-  resumenSpan.textContent = `${cantidad} apuesta${cantidad !== 1 ? "s" : ""}`;
-
+  resumenSpan.textContent = `${cantidad} apuesta${cantidad !== 1 ? "s" : ""}`;  
 }
-
 function formatearMoneda(valor) {
   return valor.toLocaleString("es-AR");
 }
