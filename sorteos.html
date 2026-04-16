@@ -8,10 +8,10 @@
 </head>
 <body>
 
-  <div class="container">
+<div class="container">
 
     <!-- PANTALLA LOTERÍAS -->
-    <div id="pantalla-loterias">
+<div id="pantalla-loterias">
       <h1 class="title">Lotería</h1>
 
   <div class="grid" id="loterias">
@@ -26,9 +26,9 @@
 
   <button class="btn todos">Todos</button>
 
-</div>
+  </div>
       <button class="btn siguiente" disabled>Siguiente</button>
-    </div>
+</div>
 
     <!-- PANTALLA TECLADO -->
      <div id="pantalla-teclado" class="hidden">
@@ -98,6 +98,42 @@
   </table>
 <div class="total-container">
   <span id="resumen">0 apuestas</span> - Total: $<span id="total">0</span>
+</div>
+</div>
+
+<!-- Pantalla Comprobante -->
+<div id="pantalla-comprobante" class="hidden">
+
+  <div class="comprobante">
+
+    <h2>🎟 Ticket</h2>
+
+    <p><strong>Turno:</strong> <span id="comp-turno"></span></p>
+    <p><strong>Fecha:</strong> <span id="comp-fecha"></span></p>
+
+    <div>
+      <strong>Loterías:</strong>
+      <div id="comp-loterias"></div>
+    </div>
+
+    <hr>
+
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th>Número</th>
+          <th>Ubicación</th>
+          <th>Importe</th>
+        </tr>
+      </thead>
+      <tbody id="comp-tabla"></tbody>
+    </table>
+
+    <h3>Total: $<span id="comp-total"></span></h3>
+
+    <button class="btn btn-volver">Nuevo Ticket</button>
+  </div>
+
 </div>
 </div>
     <script src="app.js"></script>

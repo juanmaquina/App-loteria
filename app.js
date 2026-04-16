@@ -30,6 +30,7 @@ const importe = document.getElementById("importe");
 const tbody = document.getElementById("tabla-body");
 const totalSpan = document.getElementById("total");
 const resumenSpan = document.getElementById("resumen");
+const pantallaComprobante = document.getElementById("pantalla-comprobante");
 
 // ========================
   // UTILIDADES
@@ -89,6 +90,7 @@ const resumenSpan = document.getElementById("resumen");
 
   });
 
+  
   // ========================
   // RENDER TICKET
   // ========================
@@ -113,7 +115,7 @@ const resumenSpan = document.getElementById("resumen");
       alert("Ingresá un importe");
       return;
     }
-      apuestas.push({
+    apuestas.push({
       numero: numero,
       ubicacion: ubicacion.value,
       importe: importe.value
@@ -132,21 +134,81 @@ const resumenSpan = document.getElementById("resumen");
     actualizarTabla();
   }
 
-  function enviarApuesta() {
-    if (ticket.apuestas.length === 0) {
-      alert("No hay apuestas");
-      return;
+ //Generar comprobante
+ 
+  function generarComprobante() {
+  console.log("Generando comprobante...", ticket);
 
-    }
-    console.log("Apuestas enviadas:", apuestas);
-    alert("Apuestas enviadas correctamente");
+  const compTurno = document.getElementById("comp-turno");
+  const compFecha = document.getElementById("comp-fecha");
+  const compLoterias = document.getElementById("comp-loterias");
+  const compTabla = document.getElementById("comp-tabla");
+  const compTotal = document.getElementById("comp-total");
 
-    ticket.apuestas = [];
-    calcularTotal();
-    actualizarTabla();
-
-    limpiarInputs();
+  if (!compTurno || !compTabla) {
+    console.error("Faltan elementos del comprobante en el HTML");
+    return;
   }
+
+  // Turno
+  compTurno.textContent = ticket.turno || "-";
+
+  // Fecha
+  compFecha.textContent = new Date().toLocaleString("es-AR");
+
+  // Loterías
+  compLoterias.innerHTML = ticket.loterias
+    .map(l => `<span class="loteria-chip">${l}</span>`)
+    .join("");
+
+  // Tabla
+  compTabla.innerHTML = "";
+
+  ticket.apuestas.forEach(apuesta => {
+    const fila = document.createElement("tr");
+
+    fila.innerHTML = `
+      <td>${apuesta.numero}</td>
+      <td>${apuesta.ubicacion.value}</td>
+      <td>$${formatearMoneda(apuesta.importe)}</td>
+    `;
+
+    compTabla.appendChild(fila);
+  });
+
+  // Total
+  let total = 0;
+  const cantLoterias = ticket.loterias.length || 1;
+
+  ticket.apuestas.forEach(a => {
+    total += Number(a.importe) * cantLoterias;
+  });
+
+  compTotal.textContent = formatearMoneda(total);
+}
+  function enviarApuesta() {
+  if (ticket.apuestas.length === 0) {
+    alert("No hay apuestas");
+    return;
+  }
+
+  console.log("Ticket enviado:", ticket);
+
+  // 🔥 1. Generar comprobante ANTES de limpiar
+  generarComprobante();
+
+  // 🔄 2. Cambiar de pantalla
+  pantallaTeclado.classList.add("hidden");
+  pantallaComprobante.classList.remove("hidden");
+
+  // 🧹 3. Limpiar después (opcional pero recomendado)
+  //ticket.apuestas = [];
+
+  actualizarTabla();
+  calcularTotal();
+}
+   
+  
 
   function actualizarTabla() {
        tbody.innerHTML = "";
@@ -230,4 +292,18 @@ function calcularTotal() {
 function formatearMoneda(valor) {
   return valor.toLocaleString("es-AR");
 }
+function volverInicio() {
+
+  // Reset
+  ticket.apuestas = [];
+  ticket.loterias = [];
+  ticket.turno = null;
+
+  // Volver a pantalla inicial
+  pantallaComprobante.classList.add("hidden");
+  pantallaLoterias.classList.remove("hidden");
+}
+  document.querySelector(".btn-volver")
+   .addEventListener("click", volverInicio);
+
 });
