@@ -327,3 +327,30 @@ select, #importe {
 .comprobante hr {
   margin: 10px 0;
 }
+.btn-guardar {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 8px;
+
+  background: #ffffff;
+  border: 6px solid #3498db;
+  color: #090b0c;
+
+  font-weight: bold;
+  font-size: 0.99rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Hover (efecto pro) */
+.btn-guardar:hover {
+  background: #6bf07d;
+  color: #ffffff;
+}
+
+/* Click */
+.btn-guardar:active {
+  transform: scale(0.98);
+}
