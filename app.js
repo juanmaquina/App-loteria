@@ -18,6 +18,7 @@ items.forEach(item => {
   });
 });
 
+
   // ========================
   // ESTADO GLOBAL
   // ========================
@@ -51,6 +52,7 @@ const pantallaComprobante = document.getElementById("pantalla-comprobante");
 // ========================
   // UTILIDADES
   // ========================
+
   function obtenerTurno() {
     const params = new URLSearchParams(window.location.search);
     return params.get("turno") || "-";
@@ -69,7 +71,7 @@ const pantallaComprobante = document.getElementById("pantalla-comprobante");
     const seleccionadas = document.querySelectorAll(".loteria.activa");
     btnSiguiente.disabled = seleccionadas.length === 0;
   }
-
+  
   // ========================
   // SELECCIÓN LOTERÍAS
   // ========================
@@ -79,6 +81,7 @@ const pantallaComprobante = document.getElementById("pantalla-comprobante");
       actualizarEstadoSiguiente();
     });
   });
+  
 
   btnTodos.addEventListener("click", () => {
     const todasActivas = document.querySelectorAll(".loteria.activa").length === botonesLoteria.length;
@@ -89,6 +92,8 @@ const pantallaComprobante = document.getElementById("pantalla-comprobante");
 
     actualizarEstadoSiguiente();
   });
+
+ 
 
   // ========================
   // PASAR A TECLADO
@@ -149,7 +154,6 @@ const pantallaComprobante = document.getElementById("pantalla-comprobante");
     ticket.apuestas.pop();
     actualizarTabla();
   }
-
  //Generar comprobante
  
   function generarComprobante() {
@@ -223,8 +227,6 @@ const pantallaComprobante = document.getElementById("pantalla-comprobante");
   actualizarTabla();
   calcularTotal();
 }
-   
-  
 
   function actualizarTabla() {
        tbody.innerHTML = "";
@@ -308,6 +310,7 @@ function calcularTotal() {
 function formatearMoneda(valor) {
   return valor.toLocaleString("es-AR");
 }
+
 function volverInicio() {
 
   // Reset
@@ -316,6 +319,8 @@ function volverInicio() {
   ticket.turno = null;
 
   // Volver a pantalla inicial
+
+
   pantallaComprobante.classList.add("hidden");
   pantallaLoterias.classList.remove("hidden");
 }
