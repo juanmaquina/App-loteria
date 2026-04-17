@@ -354,3 +354,60 @@ select, #importe {
 .btn-guardar:active {
   transform: scale(0.98);
 }
+/* Botón hamburguesa */
+.hamburguesa {
+  font-size: 28px;
+  cursor: pointer;
+  padding: 10px;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+}
+
+/* Menú lateral */
+.menu {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 260px;
+  height: 100%;
+  background: #1e272e;
+  color: #fff;
+  padding-top: 60px;
+  transition: 0.3s;
+  z-index: 999;
+}
+
+/* Menú activo */
+.menu.activo {
+  left: 0;
+}
+
+/* Items */
+.menu ul {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  padding: 12px 20px;
+  cursor: pointer;
+}
+
+/* Hover */
+.menu li:hover {
+  background: #2f3640;
+}
+
+/* Submenú */
+.submenu {
+  display: none;
+  padding-left: 15px;
+  font-size: 0.9rem;
+}
+
+/* Submenú activo */
+.menu-item.activo .submenu {
+  display: block;
+}

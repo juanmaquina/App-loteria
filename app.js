@@ -2,6 +2,22 @@
  // Esperar a que cargue el DOM
 document.addEventListener("DOMContentLoaded", () => {
 
+const btnMenu = document.getElementById("btn-menu");
+const menu = document.getElementById("menu");
+const items = document.querySelectorAll(".menu-item");
+
+// Abrir/cerrar menú
+btnMenu.addEventListener("click", () => {
+  menu.classList.toggle("activo");
+});
+
+// Abrir submenús
+items.forEach(item => {
+  item.addEventListener("click", () => {
+    item.classList.toggle("activo");
+  });
+});
+
   // ========================
   // ESTADO GLOBAL
   // ========================
@@ -169,7 +185,7 @@ const pantallaComprobante = document.getElementById("pantalla-comprobante");
 
     fila.innerHTML = `
       <td>${apuesta.numero}</td>
-      <td>${apuesta.ubicacion.value}</td>
+      <td>${apuesta.ubicacion.val}</td>
       <td>$${formatearMoneda(apuesta.importe)}</td>
     `;
 
@@ -305,5 +321,6 @@ function volverInicio() {
 }
   document.querySelector(".btn-volver")
    .addEventListener("click", volverInicio);
+   
 
 });
