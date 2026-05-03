@@ -40,9 +40,6 @@
 
   <select id="ubicacion">
     <option value="1">1°</option>
-    <option value="2">2°</option>
-    <option value="3">3°</option>
-    <option value="4">4°</option>
     <option value="5">5°</option>
     <option value="10">10°</option>
     <option value="20">20°</option>
@@ -136,6 +133,7 @@
   </div>
 
 </div>
+
 </div>
   <!-- Botón hamburguesa -->
 <div class="hamburguesa" id="btn-menu">
@@ -146,17 +144,17 @@
 <nav class="menu" id="menu">
 
   <ul>
-    <li class="menu-item">Resultados
-      <ul class="submenu">
-        <li>Previa</li>
-        <li>Primera</li>
-        <li>Matutina</li>
-        <li>Vespertina</li>
-        <li>Nocturna</li>
-      </ul>
-    </li>
+      <li class="menu-item" data-seccion="resultados">Resultados
+  <ul class="submenu">
+    <li data-turno="previa">Previa</li>
+    <li data-turno="primera">Primera</li>
+    <li data-turno="matutina">Matutina</li>
+    <li data-turno="vespertina">Vespertina</li>
+    <li data-turno="nocturna">Nocturna</li>
+  </ul>
+</li>
 
-    <li class="menu-item">Premios
+<li class="menu-item">Premios
       <ul class="submenu">
         <li>Previa</li>
         <li>Primera</li>
@@ -181,8 +179,8 @@
     <li class="menu-item">Resumen semanal</li>
 
   </ul>
-
 </nav>
+
 
     <script src="app.js"></script>
 </body>

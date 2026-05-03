@@ -45,7 +45,95 @@ const tbody = document.getElementById("tabla-body");
 const totalSpan = document.getElementById("total");
 const resumenSpan = document.getElementById("resumen");
 const pantallaComprobante = document.getElementById("pantalla-comprobante");
-const tablaResultados = document.getElementById("tabla-resultados");
+
+
+const btnGuardarResultado = document.getElementById("btn-guardar-resultado");
+
+btnGuardarResultado.addEventListener("click", async () => {
+
+  const turno = document.getElementById("select-turno").value;
+  const dia = document.getElementById("select-dia").value;
+  const numero = document.getElementById("input-numero").value.trim();
+
+  if (!turno || !dia || numero.length !== 4) {
+    alert("Completá todos los campos correctamente");
+    return;
+  }
+
+  try {
+
+    await fetch("http://localhost:3000/guardar-resultado", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ turno, dia, numero })
+    });
+
+    alert("Resultado guardado");
+
+    document.getElementById("input-numero").value = "";
+
+  } catch (error) {
+    console.error(error);
+    alert("Error al guardar");
+  }
+
+});
+
+async function obtenerResultados(turno) {
+  try {
+    const res = await fetch(`http://localhost:3000/resultados/${turno}`);
+    const data = await res.json();
+
+    console.log("Resultados recibidos:", data);
+
+    renderResultados(data);
+
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+function renderResultados(resultados) {
+
+  const tabla = document.getElementById("tabla-resultados");
+
+  tabla.innerHTML = "";
+
+  // Orden de días (importante)
+  const diasOrden = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado"];
+
+  diasOrden.forEach(dia => {
+
+    const fila = document.createElement("tr");
+
+    const numero = resultados[dia] || "-";
+
+    fila.innerHTML = `
+      <td>${dia.toUpperCase()}</td>
+      <td>${numero}</td>
+    `;
+
+    tabla.appendChild(fila);
+  });
+
+} 
+
+
+document.getElementById("select-turno")
+  .addEventListener("change", (e) => {
+
+    const turno = e.target.value;
+
+    if (turno) {
+      obtenerResultados(turno);
+    }
+
+});
+
+
+
+
 
 // ========================
   // UTILIDADES
@@ -69,7 +157,7 @@ const tablaResultados = document.getElementById("tabla-resultados");
     const seleccionadas = document.querySelectorAll(".loteria.activa");
     btnSiguiente.disabled = seleccionadas.length === 0;
   }
-  
+
   // ========================
   // SELECCIÓN LOTERÍAS
   // ========================
@@ -247,58 +335,7 @@ const tablaResultados = document.getElementById("tabla-resultados");
   calcularTotal(); // 👈 clave
 }
 
-
-
-    //  Calcular premios ---
-
-    function calcularPremios(resultados) {
-
-  let totalPremio = 0;
-  const cantLoterias = ticket.loterias.length || 1;
-
-  ticket.apuestas.forEach(apuesta => {
-
-    resultados.forEach((numeroGanador, index) => {
-
-      if (apuesta.numero === numeroGanador) {
-
-        let premio = 0;
-
-        // Escala básica (la podés ajustar después)
-        if (index === 0) premio = apuesta.importe * 70;
-        else if (index === 1) premio = apuesta.importe * 30;
-        else if (index === 2) premio = apuesta.importe * 15;
-        else premio = apuesta.importe * 5;
-
-        premio = premio * cantLoterias;
-
-        totalPremio += premio;
-
-        console.log(`Ganó ${apuesta.numero} → $${premio}`);
-      }
-
-    });
-
-  });
-
-  mostrarPremio(totalPremio);
-}
-
-     // Mostrar premios en pantalla --
-
-function mostrarPremio(total) {
-  const el = document.getElementById("premio-total");
-  el.textContent = "Premio: $" + total.toLocaleString("es-AR");
-
-  // efecto visual
-  el.classList.add("flash");
-
-  setTimeout(() => {
-    el.classList.remove("flash");
-  }, 500);
-}
-
-  // ========================
+// ========================
   // TECLADO NUMÉRICO
   // ========================
 
@@ -382,224 +419,9 @@ function volverInicio() {
 
 
 
-   
-    // Configuración de loterías por turno
-const configLoterias = {
-  previa: ["provincia", "ciudad", "loteria3", "loteria4", "loteria5"],
-  primera: ["provincia", "ciudad", "loteria3", "loteria4", "loteria5"],
-  matutina: ["provincia", "ciudad", "loteria3", "loteria4", "loteria5", "montevideo"],
-  vespertina: ["provincia", "ciudad", "loteria3", "loteria4", "loteria5"],
-  nocturna: ["provincia", "ciudad", "loteria3", "loteria4", "loteria5", "montevideo"]
-};
-  // Generar input dinamicamente --
-const contenedor = document.getElementById("contenedor-loterias");
-
-function renderInputs(turno) {
-
-  contenedor.innerHTML = "";
-
-  const loterias = configLoterias[turno];
-
-  loterias.forEach(lot => {
-
-    const div = document.createElement("div");
-
-    div.innerHTML = `
-      <label>${lot.toUpperCase()}</label>
-      <input type="text" maxlength="4" data-loteria="${lot}" placeholder="0000">
-    `;
-
-    contenedor.appendChild(div);
-  });
-}
-
-// Mostrar resultados en tabla --
-function renderResultados(turno, resultados) {
-
-  tablaResultados.innerHTML = "";
-
-  Object.entries(resultados).forEach(([loteria, numero]) => {
-
-    const fila = document.createElement("tr");
-
-    fila.innerHTML = `
-      <td>${loteria}</td>
-      <td>${numero}</td>
-    `;
-
-    tablaResultados.appendChild(fila);
-  });
-}
-
-    // Conectar botones de turno --
-botonesTurno.forEach(btn => {
-  btn.addEventListener("click", () => {
-
-    botonesTurno.forEach(b => b.classList.remove("activo"));
-    btn.classList.add("activo");
-
-    const turno = btn.dataset.turno;
-
-    renderInputs(turno);
-  });
-});
-
-
-  // Gardar Resultados --
-document.getElementById("btn-guardar-resultados")
-  .addEventListener("click", async () => {
-
-    const turnoActivo = document.querySelector(".btn-turno.activo");
-
-    if (!turnoActivo) {
-      alert("Seleccioná un turno");
-      return;
-    }
-
-    const turno = turnoActivo.dataset.turno;
-
-    const inputs = document.querySelectorAll("#contenedor-loterias input");
-
-    let resultados = {};
-
-    inputs.forEach(input => {
-      const loteria = input.dataset.loteria;
-      const valor = input.value.trim();
-
-      if (valor.length === 4) {
-        resultados[loteria] = valor;
-      }
-    });
-
-    try {
-      await fetch("http://localhost:3000/guardar-resultados", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          turno,
-          resultados
-        })
-      });
-
-      alert("Resultados guardados correctamente");
-
-    } catch (error) {
-      console.error(error);
-    }
-
-});
-
-// Obtener resultados --
-
-
-async function obtenerResultados(turno) {
-  try {
-    const res = await fetch(`http://localhost:3000/resultados/${turno}`);
-    const data = await res.json();
-
-    console.log("Resultados:", data);
-
-    renderResultados(turno, data);
-    calcularPremios(data);
-
-  } catch (error) {
-    console.error("Error al traer resultados:", error);
-  }
-}
-     // Conectar botones de turno --
-botonesTurno.forEach(btn => {
-  btn.addEventListener("click", () => {
-
-    botonesTurno.forEach(b => b.classList.remove("activo"));
-    btn.classList.add("activo");
-
-    const turno = btn.dataset.turno;
-
-    obtenerResultados(turno); // 🔥 ahora viene del backend
-  });
-});
-
-// Logica para cargar resultados
-
-let resultadosTemp = [];
-
-const inputResultado = document.getElementById("input-resultado");
-const btnAgregar = document.getElementById("btn-agregar-resultado");
-const btnGuardar = document.getElementById("btn-guardar-resultados");
-
-btnAgregar.addEventListener("click", () => {
-
-  const numero = inputResultado.value.trim();
-
-  if (numero.length !== 4) {
-    alert("Debe ser un número de 4 cifras");
-    return;
-  }
-
-  resultadosTemp.push(numero);
-
-  inputResultado.value = "";
-
-  renderResultados(null, resultadosTemp); // reutilizamos tabla
-});
-
-// Enviar resultados al backend --
- 
-btnGuardar.addEventListener("click", async () => {
-
-  if (resultadosTemp.length === 0) {
-    alert("No hay resultados");
-    return;
-  }
-
-  const turnoActivo = document.querySelector(".btn-turno.activo");
-
-  if (!turnoActivo) {
-    alert("Seleccioná un turno");
-    return;
-  }
-
-  const turno = turnoActivo.dataset.turno;
-
-  try {
-
-    await fetch("http://localhost:3000/guardar-resultados", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        turno,
-        numeros: resultadosTemp
-      })
-    });
-
-    alert("Resultados guardados");
-
-    resultadosTemp = [];
-
-  } catch (error) {
-    console.error(error);
-  }
-
-});
-  // render de resultados 
-function renderResultados(turno, resultados) {
-  tablaResultados.innerHTML = "";
-
-  resultados.forEach((numero, index) => {
-    const fila = document.createElement("tr");
-
-    fila.innerHTML = `
-      <td>${index + 1}</td>
-      <td>${numero}</td>
-    `;
-
-    tablaResultados.appendChild(fila);
-  });
-}
 
 
 });
+  
+
+

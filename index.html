@@ -16,6 +16,46 @@
     <a href="sorteos.html?turno=matutina" class="btn">Matutina</a>
     <a href="sorteos.html?turno=vespertina" class="btn">Vespertina</a>
     <a href="sorteos.html?turno=nocturna" class="btn">Nocturna</a>
+
+    <div id="pantalla-resultados">
+
+  <h2>Cargar Resultados</h2>
+
+  <select id="select-turno">
+    <option value="">Seleccionar turno</option>
+    <option value="previa">Previa</option>
+    <option value="primera">Primera</option>
+    <option value="matutina">Matutina</option>
+    <option value="vespertina">Vespertina</option>
+    <option value="nocturna">Nocturna</option>
+  </select>
+
+  <select id="select-dia">
+    <option value="">Seleccionar día</option>
+    <option value="lunes">Lunes</option>
+    <option value="martes">Martes</option>
+    <option value="miercoles">Miércoles</option>
+    <option value="jueves">Jueves</option>
+    <option value="viernes">Viernes</option>
+    <option value="sabado">Sábado</option>
+  </select>
+
+  <input type="text" id="input-numero" placeholder="Ej: 4321" maxlength="4">
+
+  <button id="btn-guardar-resultado">Guardar</button>
+
+      <table class="tabla">
+  <thead>
+    <tr>
+      <th>Día</th>
+      <th>Resultado</th>
+    </tr>
+  </thead>
+  <tbody id="tabla-resultados"></tbody>
+</table>
+
+</div>
+
   </div>
   
 
@@ -28,7 +68,17 @@
 <nav class="menu" id="menu">
 
   <ul>
-    <li class="menu-item">Resultados
+    <li class="menu-item" data-seccion="resultados">Resultados
+  <ul class="submenu">
+    <li data-turno="previa">Previa</li>
+    <li data-turno="primera">Primera</li>
+    <li data-turno="matutina">Matutina</li>
+    <li data-turno="vespertina">Vespertina</li>
+    <li data-turno="nocturna">Nocturna</li>
+  </ul>
+</li>
+    
+  <li class="menu-item">Premios
       <ul class="submenu">
         <li>Previa</li>
         <li>Primera</li>
@@ -36,17 +86,7 @@
         <li>Vespertina</li>
         <li>Nocturna</li>
       </ul>
-    </li>
-
-    <li class="menu-item">Premios
-      <ul class="submenu">
-        <li>Previa</li>
-        <li>Primera</li>
-        <li>Matutina</li>
-        <li>Vespertina</li>
-        <li>Nocturna</li>
-      </ul>
-    </li>
+  </li>
 
     <li class="menu-item">Ventas del día
       <ul class="submenu">
@@ -65,6 +105,7 @@
   </ul>
 
 </nav>
+
 
 <script src="app.js"></script>
 </body>
